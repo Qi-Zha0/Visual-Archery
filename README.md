@@ -1,5 +1,6 @@
 # Visual Archery ([link to repo](https://github.com/Qi-Zha0/Visual-Archery/))
 ![GitHub](https://img.shields.io/github/license/Qi-Zha0/Visual-Archery)
+[![Build Status](https://travis-ci.com/Qi-Zha0/Visual-Archery.svg?branch=master)](https://travis-ci.com/Qi-Zha0/Visual-Archery)
 
 ### Introduction
 A tool that automatically scores archery targets based on images. The archer can simply snap a photo of the target face after each end and have the scores and positions of arrows recorded without having to manually enter the numbers or mark the arrows. It aims to make score keeping for at archery ranges more efficient and to provide more insight beyond just numbers with less effort from the archer.
