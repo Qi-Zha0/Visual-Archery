@@ -6,6 +6,7 @@ before-install:
 install:
   - pip install -r requirements.txt
 script:
-  - pytest --cov=./ --flake8
+  - pytest --cov=./ 
+  - flake8
 after-success:
   - bash <(curl -s https://codecov.io/bash)
