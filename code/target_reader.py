@@ -135,9 +135,8 @@ class target_reader:
 
         # Finds the longest contour that can be approximated by four coordinates
         # Returns error status if no such contour exists
-        _, contours, _ = cv2.findContours(edges,
-                                          cv2.RETR_LIST,
-                                          cv2.CHAIN_APPROX_SIMPLE)
+        _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        
         paper = None
         max_perim = 0
         for c in contours:
@@ -506,4 +505,33 @@ class target_reader:
 
         # Saves dataframe to class variable and returns status
         self.df = df
+        return None
+
+    def read_image(self, filename=None, file_obj=None):
+        # Resets class variables
+        self.orig_image = None
+        self.image = None
+        self.image_gray = None
+        self.stage_images = []
+        self.keypoints = None
+        self.df = None
+
+        # Loads image from file if it exists
+        if type(file_obj) == type(None):
+            image = cv2.imread(filename, 1)
+
+        # Loads image from werkzeug file object
+        else:
+            try:
+                np_img = np.fromstring(file_obj.read(), np.uint8)
+                image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
+            except:
+                image = None
+
+        # Convert image to proper color channels
+        if type(image) == type(None):
+            return 'Could not read image file'
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        self.orig_image = image
+        self.image = image.copy()
         return None
