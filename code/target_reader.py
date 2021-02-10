@@ -67,7 +67,7 @@ class target_reader:
         self.df = None
 
         # Loads image from file if it exists
-        if type(file_obj) == type(None):
+        if file_obj is None:
             image = cv2.imread(filename, 1)
 
         # Loads image from werkzeug file object
@@ -79,7 +79,7 @@ class target_reader:
                 image = None
 
         # Convert image to proper color channels
-        if type(image) == type(None):
+        if image is None:
             return 'Could not read image file'
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.orig_image = image
@@ -136,7 +136,7 @@ class target_reader:
         # Finds the longest contour that can be approximated by four coordinates
         # Returns error status if no such contour exists
         _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        
+
         paper = None
         max_perim = 0
         for c in contours:
@@ -146,7 +146,7 @@ class target_reader:
                 if len(approx) == 4:
                     paper = approx
                     max_perim = perim
-        if type(paper) == type(None):
+        if paper is None:
             return True
 
         # Reorders corner points to Top Left, Top Right, Bottom Right,
@@ -173,7 +173,7 @@ class target_reader:
             [new_w, 0],
             [new_w, new_h],
             [0, new_h]
-        ], dtype = 'float32')
+        ], dtype='float32')
         M = cv2.getPerspectiveTransform(bounds, new_bounds)
         img = cv2.warpPerspective(img, M, (new_w, new_h))
 
@@ -319,12 +319,12 @@ class target_reader:
         layers = 0
         for mask in circle_masks:
             # Creates histogram and extracts most frequent value bin
-            hist = cv2.calcHist([gray], [0], mask, [32], [0,256])
+            hist = cv2.calcHist([gray], [0], mask, [32], [0, 256])
             mode_idx = np.argmax(hist)
             limit = hist[mode_idx] * pct_max
 
             # Calculates upper and lower value bounds
-            limit_idx = np.argwhere(hist < limit)[:,0]
+            limit_idx = np.argwhere(hist < limit)[:, 0]
             try:
                 low_val = max(limit_idx[limit_idx < mode_idx]) * 8
             except:
@@ -411,7 +411,7 @@ class target_reader:
         img = cv2.drawKeypoints(self.image,
                                 self.keypoints,
                                 np.array([]),
-                                (0,255,0),
+                                (0, 255, 0),
                                 cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
         # Saves image to class variables and returns status
@@ -441,12 +441,12 @@ class target_reader:
             arrow_x.append(k.pt[0])
             arrow_y.append(k.pt[1])
             arrow_radii.append(k.size / 2)
-        df = pd.DataFrame({'x':arrow_x, 'y':arrow_y, 'radius':arrow_radii})
+        df = pd.DataFrame({'x': arrow_x, 'y': arrow_y, 'radius': arrow_radii})
 
         # Calculates how many shots created a hole based on the mean radius of
         # the smallest holes
         num_smallest = np.ceil(len(arrow_radii) * pct_smallest).astype(int)
-        single_size = (np.mean(np.sort(arrow_radii)[:num_smallest]) *
+        single_size = (np.mean(np.sort(arrow_radii)[: num_smallest]) *
                        overlap_penalty)
         df['count'] = np.clip(df['radius'] // single_size, 0, max_overlapped)
         df['count'] = df['count'].replace(0, 1).astype(int)
@@ -466,8 +466,7 @@ class target_reader:
             clus_df['radius'] /= 2
             clus_df['vec_x'] = center - clus_df['x']
             clus_df['vec_y'] = center - clus_df['y']
-            clus_df['mag'] = np.sqrt(np.square(clus_df['vec_x']) +
-                                        np.square(clus_df['vec_y']))
+            clus_df['mag'] = np.sqrt(np.square(clus_df['vec_x']) + np.square(clus_df['vec_y']))
             clus_df['vec_x'] = (clus_df['vec_x'] / clus_df['mag'] *
                                 clus_df['radius'])
             clus_df['vec_y'] = (clus_df['vec_y'] / clus_df['mag'] *
@@ -517,7 +516,7 @@ class target_reader:
         self.df = None
 
         # Loads image from file if it exists
-        if type(file_obj) == type(None):
+        if file_obj is None:
             image = cv2.imread(filename, 1)
 
         # Loads image from werkzeug file object
@@ -529,7 +528,7 @@ class target_reader:
                 image = None
 
         # Convert image to proper color channels
-        if type(image) == type(None):
+        if image is None:
             return 'Could not read image file'
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.orig_image = image

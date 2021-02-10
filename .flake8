@@ -1,0 +1,4 @@
+[flake8]
+ignore = E722, E226, W504
+max-line-length = 120
+exclude = tests/*, .git. __pycache__, env, examples
